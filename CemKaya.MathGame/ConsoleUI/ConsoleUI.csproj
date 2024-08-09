@@ -10,5 +10,9 @@
   <ItemGroup>
     <Using Include="System.Console" Static="true" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\GameLogicLibrary\GameLogicLibrary.csproj" />
+  </ItemGroup>
 
 </Project>

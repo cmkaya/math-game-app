@@ -7,6 +7,14 @@ partial class Program
     WriteLine(text);
     ForegroundColor = previousColor;
   }
+  
+  private static void WriteInConsole(string text, ConsoleColor color)
+  {
+    ConsoleColor previousColor = ForegroundColor;
+    ForegroundColor = color;
+    WriteLine(text);
+    ForegroundColor = previousColor;
+  }
 
   private void Fail(string message)
   {
@@ -21,5 +29,10 @@ partial class Program
   private void Info(string message)
   {
     WriteLineInConsole($"{message}", ConsoleColor.Cyan);
+  }
+
+  private void Ask(string question)
+  {
+    WriteInConsole($"{question}", ConsoleColor.DarkYellow);
   }
 }
