@@ -7,15 +7,24 @@ public class InputValidator
     return (string.IsNullOrEmpty(text) == false) && text.All(char.IsLetter);
   }
 
-  public static bool IsInputValidDigit(string text, int maxValue)
+  /// <summary>
+  /// Validates if the input string is a positive integer within a specified range.
+  /// </summary>
+  /// <param name="input">The string to validate.</param>
+  /// <param name="maxAllowedValue">The maximum allowed value (inclusive).</param>
+  /// <returns>True if input is a positive integer not exceeding maxAllowedValue, otherwise false.</returns>
+  public static bool IsIntegerInRange(string input, int maxAllowedValue)
   {
-    // Try to parse the string into an integer
-    if (int.TryParse(text, out int number))
+    if (int.TryParse(input, out int parsedValue))
     {
-      // Check if the parsed number is within the valid range
-      return number < maxValue;
+      return parsedValue > 0 && parsedValue <= maxAllowedValue;
     }
 
     return false;
+  }
+
+  public static bool IsValidInput(string input, string[] validValues)
+  {
+    return validValues.Contains(input);
   }
 }

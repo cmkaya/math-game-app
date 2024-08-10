@@ -26,13 +26,13 @@ partial class Program
     WriteLineInConsole($"Success > {message}", ConsoleColor.Green);
   }
 
-  private static void Info(string message)
+  private static void Intro(string message)
   {
-    WriteLineInConsole($"{message}", ConsoleColor.Cyan);
+    WriteLineInConsole($"{message}", ConsoleColor.Yellow);
   }
 
-  private static void Ask(string question)
+  private static void PrintUserQuery(string question)
   {
-    WriteInConsole($"{question}", ConsoleColor.DarkYellow);
+    WriteInConsole($"{question}", ConsoleColor.DarkMagenta);
   }
 }

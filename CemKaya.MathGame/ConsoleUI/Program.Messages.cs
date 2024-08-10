@@ -1,8 +1,23 @@
 partial class Program
 {
-  private const string UserNameQuestion = "What is your name?";
-  private const string InvalidUserName = "The user cannot be empty or include any digits!";
-  private const string MenuIntroduction = "Please type a number correspond one of the following option:";
-  private const string InvalidMenuOption = "Invalid menu option number!";
-  private const string ValidMenuOption = "Thanks! The menu option is valid.";
+  private const string UserNameQuestion = "What is your name? ";
+
+  private const string InvalidUserName =
+    "Oops, your name must contain only letters. Please try again with a valid name.";
+
+  private const string MenuIntroduction =
+    "Which of the following options would you like to choose?";
+
+  private const string InvalidMenuOption =
+    "Oops, that's not a valid selection. Please try again and choose a number from the menu.";
+
+  private const string ValidSelection = "Excellent, your selection has been recorded. Let's move on.";
+
+  private const string AnotherRound = "Great job! You've completed the round. Ready for another challenge? (y/n): ";
+
+  private const string InvalidInput =
+    "Oops, that's not a valid answer. Please try again and type 'y' to continue or 'n' to exit.";
+
+  private const string Farewell =
+    "Thanks for playing the Math Game App! We hope you had fun and improved your math skills. Come back anytime to play again. Goodbye!";
 }
