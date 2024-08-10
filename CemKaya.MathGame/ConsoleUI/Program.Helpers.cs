@@ -12,26 +12,26 @@ partial class Program
   {
     ConsoleColor previousColor = ForegroundColor;
     ForegroundColor = color;
-    WriteLine(text);
+    Write(text);
     ForegroundColor = previousColor;
   }
 
-  private void Fail(string message)
+  private static void Fail(string message)
   {
     WriteLineInConsole($"Fail > {message}", ConsoleColor.Red);
   }
 
-  private void Success(string message)
+  private static void Success(string message)
   {
     WriteLineInConsole($"Success > {message}", ConsoleColor.Green);
   }
 
-  private void Info(string message)
+  private static void Info(string message)
   {
     WriteLineInConsole($"{message}", ConsoleColor.Cyan);
   }
 
-  private void Ask(string question)
+  private static void Ask(string question)
   {
     WriteInConsole($"{question}", ConsoleColor.DarkYellow);
   }
