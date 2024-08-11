@@ -171,7 +171,6 @@ partial class Program
         // Convert user input to zero-based index
         int selectedIndex = int.Parse(userInput);
         TEnum chosenOption = enumOptions[selectedIndex - 1];
-        // PromptSuccessMessage(ValidSelection);
         return chosenOption;
       }
       else
