@@ -4,7 +4,7 @@ using GameLogicLibrary.Enums;
 partial class Program
 {
   private static GameManager _gameManager;
-
+  
   private static void RunGame()
   {
     // Get username and greet the user
@@ -13,10 +13,7 @@ partial class Program
     while (true)
     {
       // Display the main menu and get the selected option
-      int selectedOption;
-      selectedOption = DisplayMainMenu();
-
-      WriteLine($"Debug: Selected Option = {selectedOption}"); // Debugging line
+      int selectedOption = DisplayMainMenu();
 
       switch (selectedOption)
       {
@@ -30,14 +27,14 @@ partial class Program
           DisplayHighestScore();
           break;
         case 4:
-          Intro(Farewell);
+          PromptHighlightMessage(Farewell);
           return;
         default:
-          Fail("Invalid selection.");
+          PromptErrorMessage("Invalid selection.");
           break;
       }
-      
-      WriteLine("Press any key to continue...");
+
+      WriteLine("Press any key to continue..." + "\n");
       ReadKey(true);
     }
   }
@@ -46,23 +43,24 @@ partial class Program
   {
     while (true)
     {
-      PrintUserQuery(UserNameQuestion);
+      PromptQuery(UserNameQuestion);
       string userName = ReadLine()!;
       if (InputValidator.IsOnlyLetters(userName))
       {
-        WriteInConsole($"""
-                        *** Welcome, {userName}! ***
-                        You've just joined the Math Game App. Let's have some fun and put your math skills to the test!
-                        """, ConsoleColor.DarkCyan);
+        PromptHighlightMessage($"""
+                                *** Welcome, {userName}! ***
+                                You've just joined the Math Game App. Let's have some fun and put your math skills to the test!
+                                """ + "\n");
         return userName;
       }
 
-      Fail(InvalidUserName);
+      PromptErrorMessage(InvalidUserName);
     }
   }
 
   private static int DisplayMainMenu()
   {
+    // Define menu options
     string[] mainMenuOptions = new[]
     {
       "Start New Game",
@@ -73,8 +71,8 @@ partial class Program
 
     int optionsLength = mainMenuOptions.Length;
 
-    // List off each menu option
-    Intro("\n" + MenuIntroduction);
+    // Display menu options to user
+    PromptHighlightMessage(MenuIntroduction);
     for (int i = 0; i < optionsLength; i++)
     {
       var option = mainMenuOptions[i];
@@ -88,17 +86,16 @@ partial class Program
     {
       if (InputValidator.IsIntegerInRange(selectedOption, optionsLength))
       {
-        Success(ValidSelection);
         return int.Parse(selectedOption);
       }
       else
       {
-        Fail(InvalidMenuOption);
+        PromptErrorMessage(InvalidMenuOption);
         selectedOption = ReadLine()!;
       }
     }
   }
-
+  
   private static void StartNewGame()
   {
     do
@@ -112,20 +109,19 @@ partial class Program
 
   private static void GetUserAnswerToQuestion()
   {
-    PrintUserQuery(MathQuestion);
+    PromptQuery(MathQuestion);
     while (true)
     {
       string userInput = ReadLine()!;
       if (InputValidator.IsOnlyDigit(userInput))
       {
-        Success(ValidQuestionAnswer);
         int enteredAnswer = int.Parse(userInput);
         string result = _gameManager.EndRound(enteredAnswer);
         WriteLine(result);
         break;
       }
-      
-      Fail(InvalidQuestionAnswer);
+
+      PromptErrorMessage(InvalidQuestionAnswer);
     }
   }
 
@@ -133,7 +129,7 @@ partial class Program
   {
     // Get all difficulty levels as an array of enum values
     DifficultyLevel[] difficultyOptions = Enum.GetValues<DifficultyLevel>();
-    DifficultyLevel chosenDifficulty = GetEnumOptionFromUser(difficultyOptions);
+    DifficultyLevel chosenDifficulty = PromptUserForEnumOption(difficultyOptions);
     _gameManager.CurrentDifficulty = chosenDifficulty;
   }
 
@@ -141,25 +137,15 @@ partial class Program
   {
     // Get all math operations as an array of enum values
     MathOperation[] mathOperations = Enum.GetValues<MathOperation>();
-    MathOperation chosenOperation = GetEnumOptionFromUser(mathOperations);
+    MathOperation chosenOperation = PromptUserForEnumOption(mathOperations);
     _gameManager.CurrentOperation = chosenOperation;
   }
-
-  /// <summary>
-  /// Presents a menu of enum options to the user and returns their selection.
-  /// </summary>
-  /// <typeparam name="TEnum">The type of enum to present options for.</typeparam>
-  /// <param name="enumOptions">An array of enum values to present as options.</param>
-  /// <returns>The enum value selected by the user.</returns>
-  /// <remarks>
-  /// This method clears the console, displays a numbered list of options,
-  /// and validates user input to ensure a valid selection is made.
-  /// </remarks>
-  private static TEnum GetEnumOptionFromUser<TEnum>(TEnum[] enumOptions)
+  
+  private static TEnum PromptUserForEnumOption<TEnum>(TEnum[] enumOptions)
     where TEnum : struct, Enum
   {
     Clear();
-    Intro(MenuIntroduction);
+    PromptHighlightMessage(MenuIntroduction);
 
     int optionCount = enumOptions.Length;
 
@@ -179,12 +165,12 @@ partial class Program
         // Convert user input to zero-based index
         int selectedIndex = int.Parse(userInput);
         TEnum chosenOption = enumOptions[selectedIndex - 1];
-        Success(ValidSelection);
+        // PromptSuccessMessage(ValidSelection);
         return chosenOption;
       }
       else
       {
-        Fail(InvalidMenuOption);
+        PromptErrorMessage(InvalidMenuOption);
       }
     }
   }
@@ -208,12 +194,12 @@ partial class Program
         WriteLine($"  {"Score",-20}: {game.CalculateScore()}");
         WriteLine();
       }
-      
-      WriteLineInConsole($"The total score: {_gameManager.GetTotalScore()}", ConsoleColor.Magenta);
+
+      PromptHighlightMessage($"The total score: {_gameManager.GetTotalScore()}");
     }
     else
     {
-      WriteLineInConsole(NoAnyGame, ConsoleColor.DarkRed);
+      PromptErrorMessage(NoAnyGame);
     }
   }
 
@@ -223,18 +209,17 @@ partial class Program
 
     if (isSuccess)
     {
-      WriteLineInConsole($"Your highest core: {highestScore}", ConsoleColor.Magenta);
+      PromptHighlightMessage($"Your highest core: {highestScore}");
     }
     else
     {
-      WriteLineInConsole(NoAnyGame, ConsoleColor.DarkRed);
+      PromptErrorMessage(NoAnyGame);
     }
-    
   }
-  
+
   private static bool AskForAnotherRound()
   {
-    PrintUserQuery(AnotherRound);
+    PromptQuery(AnotherRound);
     while (true)
     {
       string userInput = ReadLine()!.Trim().ToLower();
@@ -243,7 +228,7 @@ partial class Program
         return userInput == "y";
       }
 
-      Fail(InvalidContinueInput);
+      PromptErrorMessage(InvalidContinueInput);
     }
   }
 }

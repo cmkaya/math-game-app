@@ -9,21 +9,19 @@ public class InputValidator
 
   public static bool IsOnlyDigit(string input)
   {
+    if (string.IsNullOrEmpty(input))
+    {
+      return false;
+    }
     // Check if the first character is a negative sign
-    if (input[0] == '-')
+    if (input.Length > 1 && input[0] == '-')
     {
       return input.Substring(1).All(char.IsDigit);
     }
     
     return input.All(char.IsDigit);
   }
-
-  /// <summary>
-  /// Validates if the input string is a positive integer within a specified range.
-  /// </summary>
-  /// <param name="input">The string to validate.</param>
-  /// <param name="maxAllowedValue">The maximum allowed value (inclusive).</param>
-  /// <returns>True if input is a positive integer not exceeding maxAllowedValue, otherwise false.</returns>
+  
   public static bool IsIntegerInRange(string input, int maxAllowedValue)
   {
     if (int.TryParse(input, out int parsedValue))

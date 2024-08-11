@@ -17,6 +17,7 @@ public record GameRound(
   {
     if (IsCorrect == false) return 0;
 
+    // Calculate score based on difficulty and time taken
     int score = SelectedDifficulty switch
     {
       DifficultyLevel.Easy => 1,

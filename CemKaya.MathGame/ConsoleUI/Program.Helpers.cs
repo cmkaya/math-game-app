@@ -1,38 +1,37 @@
 partial class Program
 {
-  private static void WriteLineInConsole(string text, ConsoleColor color)
+  private static void PromptMessage(string text, ConsoleColor color, bool addNewLine = false)
   {
     ConsoleColor previousColor = ForegroundColor;
     ForegroundColor = color;
-    WriteLine(text);
+    if (addNewLine)
+    {
+      WriteLine(text);
+    }
+    else
+    {
+      Write(text);
+    }
     ForegroundColor = previousColor;
   }
-  
-  private static void WriteInConsole(string text, ConsoleColor color)
+
+  private static void PromptErrorMessage(string message)
   {
-    ConsoleColor previousColor = ForegroundColor;
-    ForegroundColor = color;
-    Write(text);
-    ForegroundColor = previousColor;
+    PromptMessage($"Error > {message}", ConsoleColor.Red, true);
   }
 
-  private static void Fail(string message)
+  private static void PromptSuccessMessage(string message)
   {
-    WriteLineInConsole($"Fail > {message}", ConsoleColor.Red);
+    PromptMessage($"Success > {message}", ConsoleColor.Green, true);
   }
 
-  private static void Success(string message)
+  private static void PromptHighlightMessage(string message)
   {
-    WriteLineInConsole($"Success > {message}", ConsoleColor.Green);
+    PromptMessage($"{message}", ConsoleColor.Yellow, true);
   }
 
-  private static void Intro(string message)
+  private static void PromptQuery(string question)
   {
-    WriteLineInConsole($"{message}", ConsoleColor.Yellow);
-  }
-
-  private static void PrintUserQuery(string question)
-  {
-    WriteInConsole($"{question}", ConsoleColor.DarkMagenta);
+    PromptMessage($"{question}", ConsoleColor.DarkMagenta);
   }
 }

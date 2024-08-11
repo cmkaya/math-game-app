@@ -2,7 +2,7 @@ namespace GameLogicLibrary.Enums;
 
 public enum DifficultyLevel
 {
-  Easy = 21,
-  Normal = 51,
-  Hard = 101
+  Easy = 11,
+  Normal = 21,
+  Hard = 31
 }

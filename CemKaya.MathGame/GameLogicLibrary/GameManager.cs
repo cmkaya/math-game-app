@@ -29,11 +29,6 @@ public class GameManager
 
   public string EndRound(int userAnswer)
   {
-    if (_currentPlayer is null)
-    {
-      throw new InvalidOperationException("Game has not been started!");
-    }
-
     _stopwatch.Stop();
     TimeSpan timeTakenToAnswer = _stopwatch.Elapsed;
 
