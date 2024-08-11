@@ -15,9 +15,18 @@ partial class Program
 
   private const string AnotherRound = "Great job! You've completed the round. Ready for another challenge? (y/n): ";
 
-  private const string InvalidInput =
+  private const string InvalidContinueInput =
     "Oops, that's not a valid answer. Please try again and type 'y' to continue or 'n' to exit.";
 
   private const string Farewell =
     "Thanks for playing the Math Game App! We hope you had fun and improved your math skills. Come back anytime to play again. Goodbye!";
+
+  private const string NoAnyGame = "No any game history found!";
+  
+  private const string MathQuestion ="What is your answer? ";
+
+  private const string ValidQuestionAnswer = "Great! Let's check your answer now.";
+  
+  private const string InvalidQuestionAnswer =
+    "Oops, that's not a valid answer. Please try again and type a digit.";
 }

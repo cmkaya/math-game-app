@@ -2,9 +2,20 @@ namespace GameLogicLibrary;
 
 public class InputValidator
 {
-  public static bool IsOnlyLetters(string text)
+  public static bool IsOnlyLetters(string input)
   {
-    return (string.IsNullOrEmpty(text) == false) && text.All(char.IsLetter);
+    return (string.IsNullOrEmpty(input) == false) && input.All(char.IsLetter);
+  }
+
+  public static bool IsOnlyDigit(string input)
+  {
+    // Check if the first character is a negative sign
+    if (input[0] == '-')
+    {
+      return input.Substring(1).All(char.IsDigit);
+    }
+    
+    return input.All(char.IsDigit);
   }
 
   /// <summary>

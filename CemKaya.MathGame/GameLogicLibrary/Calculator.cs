@@ -15,7 +15,7 @@ public static class Calculator
   /// <returns>A tuple containing the two operands and the calculated answer.</returns>
   /// <exception cref="DivideByZeroException">Thrown when a division by zero is attempted.</exception>
   /// <exception cref="ArgumentOutOfRangeException">Thrown when an unexpected operation is provided.</exception>
-  public static (int FirstOperand, int SecondOperand, int Answer) CalculateOperation(
+  public static (int FirstOperand, int SecondOperand, int CorrectAnswer) CalculateOperation(
     MathOperation selectedOperation, DifficultyLevel selectedDifficulty)
   {
     var (first, second) = RandomNumberGenerator.GenerateNumberPair(

@@ -3,19 +3,42 @@ using GameLogicLibrary.Enums;
 
 partial class Program
 {
+  private static GameManager _gameManager;
+
   private static void RunGame()
   {
     // Get username and greet the user
     string playerName = GreetUser();
-
-    // Display the main menu and get the selected option
-    int selectedOption = DisplayMainMenu();
-
-    switch (selectedOption)
+    _gameManager = new GameManager(playerName);
+    while (true)
     {
-      case 1:
-        StartNewGame();
-        break;
+      // Display the main menu and get the selected option
+      int selectedOption;
+      selectedOption = DisplayMainMenu();
+
+      WriteLine($"Debug: Selected Option = {selectedOption}"); // Debugging line
+
+      switch (selectedOption)
+      {
+        case 1:
+          StartNewGame();
+          break;
+        case 2:
+          DisplayGameHistory();
+          break;
+        case 3:
+          DisplayHighestScore();
+          break;
+        case 4:
+          Intro(Farewell);
+          return;
+        default:
+          Fail("Invalid selection.");
+          break;
+      }
+      
+      WriteLine("Press any key to continue...");
+      ReadKey(true);
     }
   }
 
@@ -82,10 +105,28 @@ partial class Program
     {
       SetDifficultyLevel();
       SetMathOperation();
+      WriteLine(_gameManager.StartRoundWithQuestion());
+      GetUserAnswerToQuestion();
     } while (AskForAnotherRound());
-    
-    Clear();
-    Intro(Farewell);
+  }
+
+  private static void GetUserAnswerToQuestion()
+  {
+    PrintUserQuery(MathQuestion);
+    while (true)
+    {
+      string userInput = ReadLine()!;
+      if (InputValidator.IsOnlyDigit(userInput))
+      {
+        Success(ValidQuestionAnswer);
+        int enteredAnswer = int.Parse(userInput);
+        string result = _gameManager.EndRound(enteredAnswer);
+        WriteLine(result);
+        break;
+      }
+      
+      Fail(InvalidQuestionAnswer);
+    }
   }
 
   private static void SetDifficultyLevel()
@@ -93,6 +134,7 @@ partial class Program
     // Get all difficulty levels as an array of enum values
     DifficultyLevel[] difficultyOptions = Enum.GetValues<DifficultyLevel>();
     DifficultyLevel chosenDifficulty = GetEnumOptionFromUser(difficultyOptions);
+    _gameManager.CurrentDifficulty = chosenDifficulty;
   }
 
   private static void SetMathOperation()
@@ -100,6 +142,7 @@ partial class Program
     // Get all math operations as an array of enum values
     MathOperation[] mathOperations = Enum.GetValues<MathOperation>();
     MathOperation chosenOperation = GetEnumOptionFromUser(mathOperations);
+    _gameManager.CurrentOperation = chosenOperation;
   }
 
   /// <summary>
@@ -145,6 +188,49 @@ partial class Program
       }
     }
   }
+
+  private static void DisplayGameHistory()
+  {
+    var games = _gameManager.GetGameHistory();
+    if (games.Any())
+    {
+      for (int i = 0; i < games.Count; i++)
+      {
+        GameRound game = games[i];
+        WriteLine($"{i + 1}. Round");
+        WriteLine($"  {"Selected operation",-20}: {game.SelectedOperation}");
+        WriteLine($"  {"The first operand",-20}: {game.FirstOperand}");
+        WriteLine($"  {"The second operand",-20}: {game.SecondOperand}");
+        WriteLine($"  {"Correct answer",-20}: {game.CorrectAnswer}");
+        WriteLine($"  {"Your answer",-20}: {game.UserAnswer}");
+        WriteLine($"  {"Result",-20}: {game.IsCorrect}");
+        WriteLine($"  {"Taken time",-20}: {game.TimeTaken.TotalSeconds:F} secs");
+        WriteLine($"  {"Score",-20}: {game.CalculateScore()}");
+        WriteLine();
+      }
+      
+      WriteLineInConsole($"The total score: {_gameManager.GetTotalScore()}", ConsoleColor.Magenta);
+    }
+    else
+    {
+      WriteLineInConsole(NoAnyGame, ConsoleColor.DarkRed);
+    }
+  }
+
+  private static void DisplayHighestScore()
+  {
+    (int highestScore, bool isSuccess) = _gameManager.GetHighestScore();
+
+    if (isSuccess)
+    {
+      WriteLineInConsole($"Your highest core: {highestScore}", ConsoleColor.Magenta);
+    }
+    else
+    {
+      WriteLineInConsole(NoAnyGame, ConsoleColor.DarkRed);
+    }
+    
+  }
   
   private static bool AskForAnotherRound()
   {
@@ -157,7 +243,7 @@ partial class Program
         return userInput == "y";
       }
 
-      Fail(InvalidInput);
+      Fail(InvalidContinueInput);
     }
   }
 }
