@@ -66,7 +66,7 @@ public class GameManager
       int highestScore = _currentPlayer.GetHighestScore();
       return (highestScore, true);
     }
-    catch (InvalidOperationException ex)
+    catch (InvalidOperationException)
     {
       return (0, false);
     }

@@ -3,7 +3,7 @@ using GameLogicLibrary.Enums;
 
 partial class Program
 {
-  private static GameManager _gameManager;
+  private static GameManager? _gameManager;
   
   private static void RunGame()
   {
@@ -102,7 +102,7 @@ partial class Program
     {
       SetDifficultyLevel();
       SetMathOperation();
-      WriteLine(_gameManager.StartRoundWithQuestion());
+      WriteLine(_gameManager?.StartRoundWithQuestion());
       GetUserAnswerToQuestion();
     } while (AskForAnotherRound());
   }
@@ -116,7 +116,7 @@ partial class Program
       if (InputValidator.IsOnlyDigit(userInput))
       {
         int enteredAnswer = int.Parse(userInput);
-        string result = _gameManager.EndRound(enteredAnswer);
+        string? result = _gameManager?.EndRound(enteredAnswer);
         WriteLine(result);
         break;
       }
@@ -130,7 +130,10 @@ partial class Program
     // Get all difficulty levels as an array of enum values
     DifficultyLevel[] difficultyOptions = Enum.GetValues<DifficultyLevel>();
     DifficultyLevel chosenDifficulty = PromptUserForEnumOption(difficultyOptions);
-    _gameManager.CurrentDifficulty = chosenDifficulty;
+    if (_gameManager != null)
+    {
+      _gameManager.CurrentDifficulty = chosenDifficulty;
+    }
   }
 
   private static void SetMathOperation()
@@ -138,7 +141,10 @@ partial class Program
     // Get all math operations as an array of enum values
     MathOperation[] mathOperations = Enum.GetValues<MathOperation>();
     MathOperation chosenOperation = PromptUserForEnumOption(mathOperations);
-    _gameManager.CurrentOperation = chosenOperation;
+    if (_gameManager != null)
+    {
+      _gameManager.CurrentOperation = chosenOperation;
+    }
   }
   
   private static TEnum PromptUserForEnumOption<TEnum>(TEnum[] enumOptions)
@@ -177,8 +183,8 @@ partial class Program
 
   private static void DisplayGameHistory()
   {
-    var games = _gameManager.GetGameHistory();
-    if (games.Any())
+    IReadOnlyList<GameRound>? games = _gameManager?.GetGameHistory();
+    if (games != null && games.Any())
     {
       for (int i = 0; i < games.Count; i++)
       {
@@ -195,7 +201,7 @@ partial class Program
         WriteLine();
       }
 
-      PromptHighlightMessage($"The total score: {_gameManager.GetTotalScore()}");
+      PromptHighlightMessage($"The total score: {_gameManager?.GetTotalScore()}");
     }
     else
     {
@@ -205,16 +211,16 @@ partial class Program
 
   private static void DisplayHighestScore()
   {
-    (int highestScore, bool isSuccess) = _gameManager.GetHighestScore();
+      (int highestScore, bool isSuccess) = _gameManager?.GetHighestScore() ?? (0, false);
 
-    if (isSuccess)
-    {
-      PromptHighlightMessage($"Your highest core: {highestScore}");
-    }
-    else
-    {
-      PromptErrorMessage(NoAnyGame);
-    }
+      if (isSuccess)
+      {
+        PromptHighlightMessage($"Your highest core: {highestScore}");
+      }
+      else
+      {
+        PromptErrorMessage(NoAnyGame);
+      }
   }
 
   private static bool AskForAnotherRound()
